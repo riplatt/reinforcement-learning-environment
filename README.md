@@ -1,2 +1,2 @@
 # reinforcement-learning-environment
-Reinforcement Learning Environment
+A test project to help me lean about build reinforcement learning environments
