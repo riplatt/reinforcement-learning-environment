@@ -99,9 +99,9 @@ def train_eval(
     output_fc_layer_params=(20,),
 
     # Params for collect
-    initial_collect_steps=1000,
-    collect_steps_per_iteration=1,
-    epsilon_greedy=0.1,
+    initial_collect_steps=10000,
+    collect_steps_per_iteration=2,
+    epsilon_greedy=0.6,
     replay_buffer_capacity=100000,
     # Params for target update
     target_update_tau=0.05,
@@ -119,9 +119,9 @@ def train_eval(
     num_eval_episodes=10,
     eval_interval=1000,
     # Params for checkpoints
-    train_checkpoint_interval=10000,
-    policy_checkpoint_interval=5000,
-    rb_checkpoint_interval=20000,
+    train_checkpoint_interval=50000,
+    policy_checkpoint_interval=50000,
+    rb_checkpoint_interval=50000,
     # Params for summaries and logging
     log_interval=1000,
     summary_interval=1000,
@@ -217,16 +217,18 @@ def train_eval(
 
     train_checkpointer = common.Checkpointer(
         ckpt_dir=train_dir,
+        max_to_keep=2,
         agent=tf_agent,
         global_step=global_step,
         metrics=metric_utils.MetricsGroup(train_metrics, 'train_metrics'))
     policy_checkpointer = common.Checkpointer(
         ckpt_dir=os.path.join(train_dir, 'policy'),
+        max_to_keep=2,
         policy=eval_policy,
         global_step=global_step)
     rb_checkpointer = common.Checkpointer(
         ckpt_dir=os.path.join(train_dir, 'replay_buffer'),
-        max_to_keep=1,
+        max_to_keep=2,
         replay_buffer=replay_buffer)
 
     train_checkpointer.initialize_or_restore()

@@ -154,10 +154,16 @@ class puzzleEnv(py_environment.PyEnvironment):
         right_edges = np.hstack((np.zeros((right_edges.shape[0], 1)), right_edges))
         left_edges = np.hstack((left_edges, np.zeros((left_edges.shape[0], 1))))
 
-        _reward_multiplier += 10 if not top_edges[0].any() else 0
-        _reward_multiplier += 10 if not bottom_edges[-1].any() else 0
-        _reward_multiplier += 10 if not right_edges[:, [-1]].any() else 0
-        _reward_multiplier += 10 if not left_edges[:, [0]].any() else 0
+        _reward_multiplier += np.count_nonzero(top_edges[0] == 0) / 4 * 10
+        _reward_multiplier += np.count_nonzero(bottom_edges[-1] == 0) / 4 * 10
+        _reward_multiplier += np.count_nonzero(right_edges[:, [-1]] == 0) / 4 * 10
+        _reward_multiplier += np.count_nonzero(left_edges[:, [0]] == 0) / 4 * 10
+
+        # _reward_multiplier += 10 if not top_edges[0].any() else 0
+        # _reward_multiplier += 10 if not bottom_edges[-1].any() else 0
+        # _reward_multiplier += 10 if not right_edges[:, [-1]].any() else 0
+        # _reward_multiplier += 10 if not left_edges[:, [0]].any() else 0
+
         _reward_multiplier = 1 if _reward_multiplier == 0 else _reward_multiplier
 
         solved_edges = np.count_nonzero(
