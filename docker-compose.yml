@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  tensorflow:
+    image: tensorflow/tensorflow:2.11.0
+    container_name: tensorflow
+    # restart: unless-stopped
+    environment:
+      - TZ=australia/brisbane
+    ports:
+      - 8880:8888
+    command: bash
